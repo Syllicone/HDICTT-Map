@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'Projekt Blackbird';
+    src: url('ProjektBlackbird-Regular.woff2') format('woff2'),
+        url('ProjektBlackbird-Regular.woff') format('woff');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}

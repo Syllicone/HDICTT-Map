@@ -1,0 +1,196 @@
+@import url('Projekt-Blackbird.css');
+
+h1 {
+    font-family: 'Projekt Blackbird', sans-serif;
+    font-weight: 900;
+    font-size: 3.5rem;
+    color: #000;
+    margin: 0;
+}
+
+
+html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Projekt Blackbird', sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    /* keep inline flow so replacing text naturally pushes neighbours */
+    .interactive-word {
+      display: inline-block;
+      /* remove fixed width so replacement expands and pushes other text */
+      /* width: 2.8ch;  <-- removed */
+      text-align: center;
+      padding: 0.25ch 0.3ch;
+      border-radius: 0.6ch;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .interactive-word:hover .label {
+      text-decoration: underline;
+      text-decoration-thickness: 0.05em;
+      text-decoration-color: #2c70d1;
+      text-underline-offset: 0.1em;
+      color: #2c70d1;
+    }
+
+    .interactive-word:active {
+      transform: scale(0.98);
+    }
+
+    /* ensure label keeps font weight/size */
+    .label {
+      display: inline-block;
+      white-space: nowrap;
+      font-weight: 900; /* match heading weight */
+      font-size: inherit; /* same size as h1 */
+    }
+
+    /* infobox */
+    .info, .infobox, #infobox {
+      margin-top: 1.2rem;
+      font-size: 1rem;
+      color: #333;
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+    .info.visible, .infobox.visible, #infobox.visible {
+      opacity: 1;
+    }
+
+    .infobox {
+      position: fixed;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 2vmin;
+      max-width: 90%;
+      text-align: center;
+      font-size: clamp(12px, 2.4vw, 16px);
+      color: #333;
+      opacity: 0;
+      transition: opacity 0.18s ease;
+      pointer-events: none;
+      z-index: 1000;
+    }
+
+
+.top-strip{
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  height: .5vmin;
+
+
+  /* HIDDEN by default */
+  transform: translateY(-110%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 240ms ease, opacity 240ms ease;
+}
+
+/* strong default hidden state */
+.top-strip {
+  transform: translateY(-110%) !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* SHOWN only when script toggles this class */
+.top-strip.visible-by-it {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+.top-box{
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5vmin;
+  font-size: clamp(10px, 1.8vmin, 14px);
+  color: #000;
+  border-left: 1px solid rgba(0,0,0,0.04);
+  box-sizing: border-box;
+  background: transparent; /* change to visible color if desired */
+}
+
+.top-box svg {
+  display: block;
+  margin: 0 auto;
+  height: auto;
+  padding: 0.2vmin;
+  /* make sure the image never exceeds 1/9 of the viewport width */
+  max-width: calc((100vw - 8 * var(--box-gap, 0px)) / 9);
+  /* keep image responsive inside its box */
+  width: 60%;
+  object-fit: contain;
+  border: 5px solid #000;
+  border-radius: 0.5vmin;
+}
+
+.top-box svg:hover {
+  border-color: #2c70d1;
+  cursor: pointer;
+}
+
+.top-box div {
+  margin-top: 0.5vmin;
+  color: #000;                        /* default text colour */
+  transition: color .18s ease;        /* smooth change */
+}
+
+.top-box:hover div {
+  color: #2c70d1;
+}
+
+/* spacing: push page content below the fixed strip */
+.container {
+  padding-top: calc(6vmin + 2vmin); /* match top-strip height + extra gap */
+  box-sizing: border-box;
+}
+
+
+.top-strip {
+  transition: transform 240ms ease, opacity 240ms ease;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* target every shape inside the inline SVGs in .top-box */
+.top-box svg path,
+.top-box svg circle,
+.top-box svg rect,
+.top-box svg polygon,
+.top-box svg polyline,
+.top-box svg ellipse,
+.top-box svg line {
+  fill: #000;
+  transition: fill .18s ease;
+}
+
+/* change color on hover of the parent box */
+.top-box:hover svg path,
+.top-box:hover svg circle,
+.top-box:hover svg rect,
+.top-box:hover svg polygon,
+.top-box:hover svg polyline,
+.top-box:hover svg ellipse,
+.top-box:hover svg line {
+  fill: #2c70d1;            /* hover color */
+}
+
+/* quick catch‑all (targets any SVG child element) */
+.top-box svg * {
+  transition: fill .18s ease, stroke .18s ease;
+}
