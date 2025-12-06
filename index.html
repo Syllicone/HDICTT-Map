@@ -104,64 +104,105 @@
 
   <script>
   (function(){
-    const topStrip = document.querySelector('.top-strip');
-    const bottomStrip = document.querySelector('.bottom-strip');
-    const wordIt = document.getElementById('word-it');
-    const wordThis = document.getElementById('word-this');
-    const info = document.getElementById('infobox');
-    const DEFAULT_INFO = 'click around and interact with the words';
+  const topStrip = document.querySelector('.top-strip');
+  const bottomStrip = document.querySelector('.bottom-strip');
+  const wordIt = document.getElementById('word-it');
+  const wordThis = document.getElementById('word-this');
+  const info = document.getElementById('infobox');
+  const DEFAULT_INFO = 'click around and interact with the words';
 
-    // init
-    topStrip?.classList.remove('visible-by-it');
-    bottomStrip?.classList.remove('visible-by-this');
-    [wordIt, wordThis].forEach(el => el && (el.dataset.replaced ||= '0'));
-    info && (info.textContent = DEFAULT_INFO, info.classList.add('visible'));
+  // init
+  topStrip?.classList.remove('visible-by-it');
+  bottomStrip?.classList.remove('visible-by-this');
+  [wordIt, wordThis].forEach(el => el && (el.dataset.replaced ||= '0'));
+  info && (info.textContent = DEFAULT_INFO, info.classList.add('visible'));
 
-    function showTransient(msg, dur = 2500) {
-      if (!info) return;
-      clearTimeout(info._t);
-      info.textContent = msg;
-      info.classList.add('transient');
-      info._t = setTimeout(() => {
-        info.classList.remove('transient');
-        info.textContent = DEFAULT_INFO;
-      }, dur);
+  function showTransient(msg, dur = 2500) {
+    if (!info) return;
+    clearTimeout(info._t);
+    info.textContent = msg;
+    info.classList.add('transient');
+    info._t = setTimeout(() => {
+      info.classList.remove('transient');
+      info.textContent = DEFAULT_INFO;
+    }, dur);
+  }
+
+  function updateStrips() {
+    if (topStrip && wordIt) {
+      (wordIt.dataset.replaced === '1')
+        ? topStrip.classList.add('visible-by-it')
+        : topStrip.classList.remove('visible-by-it');
     }
-
-    function updateStrips() {
-      // show top only if "it" is replaced
-      if (topStrip && wordIt) {
-        (wordIt.dataset.replaced === '1')
-          ? topStrip.classList.add('visible-by-it')
-          : topStrip.classList.remove('visible-by-it');
-      }
-      // show bottom only if "this" is replaced
-      if (bottomStrip && wordThis) {
-        (wordThis.dataset.replaced === '1')
-          ? bottomStrip.classList.add('visible-by-this')
-          : bottomStrip.classList.remove('visible-by-this');
-      }
+    if (bottomStrip && wordThis) {
+      (wordThis.dataset.replaced === '1')
+        ? bottomStrip.classList.add('visible-by-this')
+        : bottomStrip.classList.remove('visible-by-this');
     }
+  }
 
-    function toggleReplace(el) {
-      const label = el.querySelector('.label');
-      const { original, replacement, replaced } = el.dataset;
-      const wasReplaced = replaced === '1';
-      label.textContent = wasReplaced ? original : replacement;
-      el.dataset.replaced = wasReplaced ? '0' : '1';
-      showTransient(wasReplaced ? `Restored "${original}"` : `"${original}" → "${replacement}"`);
-      updateStrips();
-    }
-
-    document.querySelectorAll('.interactive-word').forEach(el => {
-      el.addEventListener('click', e => { toggleReplace(e.currentTarget); e.currentTarget.blur(); });
-      el.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleReplace(e.currentTarget); }
-      });
-    });
-
+  function toggleReplace(el) {
+    const label = el.querySelector('.label');
+    const { original, replacement, replaced } = el.dataset;
+    const wasReplaced = replaced === '1';
+    label.textContent = wasReplaced ? original : replacement;
+    el.dataset.replaced = wasReplaced ? '0' : '1';
+    showTransient(wasReplaced ? `Restored "${original}"` : `"${original}" → "${replacement}"`);
     updateStrips();
-  })();
+  }
+
+  document.querySelectorAll('.interactive-word').forEach(el => {
+    el.addEventListener('click', e => { toggleReplace(e.currentTarget); e.currentTarget.blur(); });
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleReplace(e.currentTarget); }
+    });
+  });
+
+  // Handle box clicks to show overlays
+  document.querySelectorAll('.top-box').forEach(box => {
+    box.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = box.querySelector('div').textContent;
+      showOverlay('top', text);
+    });
+  });
+
+  document.querySelectorAll('.bottom-box').forEach(box => {
+    box.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const text = box.querySelector('div').textContent;
+      showOverlay('bottom', text);
+    });
+  });
+
+  function showOverlay(position, text) {
+    // Remove any existing overlay
+    document.querySelectorAll('.strip-overlay').forEach(o => o.remove());
+    
+    // Create new overlay
+    const overlay = document.createElement('div');
+    overlay.className = `strip-overlay ${position} active`;
+    overlay.innerHTML = `
+      <span class="overlay-close">✕</span>
+      <div class="overlay-content">${text}</div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // Close button
+    overlay.querySelector('.overlay-close').addEventListener('click', (e) => {
+      e.stopPropagation();
+      overlay.remove();
+    });
+  }
+
+  // Click anywhere else to close overlay
+  document.addEventListener('click', () => {
+    document.querySelectorAll('.strip-overlay').forEach(o => o.remove());
+  });
+
+  updateStrips();
+})();
   </script>
 </body>
 </html>

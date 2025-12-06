@@ -237,3 +237,50 @@ h1 {
 .bottom-box svg * {
   transition: fill .18s ease, stroke .18s ease;
 }
+
+/* Box overlays */
+.strip-overlay {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid #000;
+  border-radius: 0.5vmin;
+  padding: 2rem;
+  display: none;
+}
+
+.strip-overlay.active {
+  display: block;
+}
+
+.strip-overlay.top {
+  top: 50px;
+  height: calc(8vmin + 2vmin);
+}
+
+.strip-overlay.bottom {
+  bottom: 50px;
+  height: calc(8vmin + 2vmin);
+}
+
+.overlay-content {
+  font-size: clamp(12px, 2vw, 16px);
+  color: #333;
+  line-height: 1.6;
+}
+
+.overlay-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  user-select: none;
+}
+
+.overlay-close:hover {
+  color: #2c70d1;
+}
