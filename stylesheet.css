@@ -11,7 +11,6 @@ html, body {
 }
 
 h1 {
-  font-family: 'Projekt Blackbird', sans-serif;
   font-weight: 900;
   font-size: 3.5rem;
   color: #000;
@@ -20,7 +19,6 @@ h1 {
 
 .container {
   text-align: center;
-  /* spacing: push page content below the fixed top strip */
   padding-top: calc(6vmin + 2vmin);
   box-sizing: border-box;
 }
@@ -48,21 +46,10 @@ h1 {
   display: inline-block;
   white-space: nowrap;
   font-weight: 900;
-  font-size: inherit;
 }
 
 /* Infobox */
-.info, .infobox, #infobox {
-  margin-top: 1.2rem;
-  font-size: 1rem;
-  color: #333;
-  opacity: 0;
-  transition: opacity .18s ease;
-}
-.info.visible, .infobox.visible, #infobox.visible {
-  opacity: 1;
-}
-.infobox {
+.infobox, #infobox {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -76,13 +63,15 @@ h1 {
   pointer-events: none;
   z-index: 1000;
 }
+.infobox.visible, #infobox.visible {
+  opacity: 1;
+}
 
-/* Top strip */
-.top-strip {
+/* Strips - shared styles */
+.top-strip,
+.bottom-strip {
   position: fixed;
   left: 50%;
-  transform: translateX(-50%) translateY(-110%);
-  top: 50px;
   width: 95%;
   display: grid;
   grid-template-columns: repeat(9, 1fr);
@@ -90,6 +79,11 @@ h1 {
   opacity: 0;
   pointer-events: none;
   transition: transform 240ms ease, opacity 240ms ease;
+}
+
+.top-strip {
+  top: 50px;
+  transform: translateX(-50%) translateY(-110%);
 }
 .top-strip.visible-by-it {
   transform: translateX(-50%) translateY(0);
@@ -97,99 +91,31 @@ h1 {
   pointer-events: auto;
 }
 
-.top-box {
-  display: inline-block;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5vmin;
-  font-size: clamp(10px, 1.8vmin, 14px);
-  color: #000;
-  border-left: 1px solid rgba(0,0,0,0.04);
-  box-sizing: border-box;
-  background: transparent;
-}
-.top-box svg {
-  display: block;
-  margin: 0 auto;
-  height: auto;
-  padding: 0.2vmin;
-  max-width: calc((100vw - 8 * var(--box-gap, 0px)) / 9);
-  width: 60%;
-  object-fit: contain;
-  border: 5px solid #000;
-  border-radius: 0.5vmin;
-}
-.top-box svg:hover {
-  border-color: #2c70d1;
-  cursor: pointer;
-}
-.top-box div {
-  margin-top: 0.5vmin;
-  color: #000;
-  transition: color .18s ease;
-}
-.top-box:hover div {
-  color: #2c70d1;
-}
-
-/* Top SVG fill behavior */
-.top-box svg path,
-.top-box svg circle,
-.top-box svg rect,
-.top-box svg polygon,
-.top-box svg polyline,
-.top-box svg ellipse,
-.top-box svg line {
-  fill: #000;
-  transition: fill .18s ease;
-}
-.top-box:hover svg path,
-.top-box:hover svg circle,
-.top-box:hover svg rect,
-.top-box:hover svg polygon,
-.top-box:hover svg polyline,
-.top-box:hover svg ellipse,
-.top-box:hover svg line {
-  fill: #2c70d1;
-}
-.top-box svg * {
-  transition: fill .18s ease, stroke .18s ease;
-}
-
-/* Bottom strip */
 .bottom-strip {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%) translateY(110%);
   bottom: 80px;
-  width: 95%;
-  display: grid;
-  grid-template-columns: repeat(9, 1fr);
-  gap: 1rem;
-  text-align: center;
-  cursor: pointer;
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 240ms ease, opacity 240ms ease;
+  transform: translateX(-50%) translateY(110%);
 }
-
 .bottom-strip.visible-by-this {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
   pointer-events: auto;
 }
 
+/* Boxes - shared styles */
+.top-box,
 .bottom-box {
   display: inline-block;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5vmin;
   font-size: clamp(10px, 1.8vmin, 14px);
   color: #000;
   border-left: 1px solid rgba(0,0,0,0.04);
   box-sizing: border-box;
-  background: transparent;
 }
+
+.bottom-box {
+  padding: 0.5vmin;
+}
+
+.top-box svg,
 .bottom-box svg {
   display: block;
   margin: 0 auto;
@@ -201,74 +127,128 @@ h1 {
   border: 5px solid #000;
   border-radius: 0.5vmin;
 }
+
+.top-box svg {
+  padding: -0.2vmin;
+}
+
+.top-box svg:hover,
 .bottom-box svg:hover {
   border-color: #2c70d1;
   cursor: pointer;
 }
+
+.top-box div,
 .bottom-box div {
-  margin-top: 0.5vmin;
+  margin-top: 0.25vmin;
   color: #000;
   transition: color .18s ease;
 }
+
+.top-box:hover div,
 .bottom-box:hover div {
   color: #2c70d1;
 }
 
-/* Bottom SVG fill behavior */
-.bottom-box svg path,
-.bottom-box svg circle,
-.bottom-box svg rect,
-.bottom-box svg polygon,
-.bottom-box svg polyline,
-.bottom-box svg ellipse,
-.bottom-box svg line {
-  fill: #000;
-  transition: fill .18s ease;
-}
-.bottom-box:hover svg path,
-.bottom-box:hover svg circle,
-.bottom-box:hover svg rect,
-.bottom-box:hover svg polygon,
-.bottom-box:hover svg polyline,
-.bottom-box:hover svg ellipse,
-.bottom-box:hover svg line {
-  fill: #2c70d1;
-}
+/* SVG fill behavior - consolidated */
+.top-box svg *,
 .bottom-box svg * {
+  fill: #000;
   transition: fill .18s ease, stroke .18s ease;
 }
 
-/* Box overlays */
+.top-box:hover svg *,
+.bottom-box:hover svg * {
+  fill: #2c70d1;
+}
+
+/* Overlay */
 .strip-overlay {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
-  width: 90%;
+  width: 92%;
   background: rgba(255, 255, 255, 0.98);
   border: 2px solid #000;
   border-radius: 0.5vmin;
-  padding: 2rem;
+  padding: 1.25rem;
   display: none;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 2rem;
 }
 
 .strip-overlay.active {
-  display: block;
+  display: flex;
 }
 
 .strip-overlay.top {
   top: 50px;
-  height: calc(8vmin + 2vmin);
+  height: calc(10vmin + 4vmin);
 }
 
 .strip-overlay.bottom {
   bottom: 50px;
-  height: calc(8vmin + 2vmin);
+  height: calc(10vmin + 4vmin);
 }
 
-.overlay-content {
-  font-size: clamp(12px, 2vw, 16px);
-  color: #333;
-  line-height: 1.6;
+.overlay-header {
+  flex: 0 0 30%;
+}
+
+.overlay-header h3 {
+  font-weight: bold;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.overlay-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.reference-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.reference-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.reference-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.reference-item a {
+  text-align: center;
+  font-size: 0.85rem;
+  color: #2c70d1;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.18s ease;
+}
+
+.reference-item a:hover {
+  border-bottom-color: #2c70d1;
+}
+
+.reference-item a:visited {
+  color: #1a4d8f;
 }
 
 .overlay-close {
