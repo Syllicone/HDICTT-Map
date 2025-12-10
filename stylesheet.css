@@ -1,4 +1,4 @@
-@import url('Projekt-Blackbird.css');
+﻿@import url('Projekt-Blackbird.css');
 
 /* Base */
 html, body {
@@ -15,15 +15,12 @@ h1 {
   font-size: 3.5rem;
   color: #000;
   margin: 0;
-  user-select: none; /* Makes all h1 text unselectable */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: none;
 }
 
 .container {
   text-align: center;
-  padding-top: calc(6vmin + 2vmin);
+  padding-top: calc(8vmin);
   box-sizing: border-box;
 }
 
@@ -35,21 +32,19 @@ h1 {
   border-radius: 0.6ch;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  user-select: none; /* Also make the interactive words unselectable */
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
+  user-select: none;
 }
+
 .interactive-word:hover .label {
-  text-decoration: underline;
-  text-decoration-thickness: 0.05em;
-  text-decoration-color: #2c70d1;
+  text-decoration: underline 0.05em #2c70d1;
   text-underline-offset: 0.1em;
   color: #2c70d1;
 }
+
 .interactive-word:active {
   transform: scale(0.98);
 }
+
 .label {
   display: inline-block;
   white-space: nowrap;
@@ -57,7 +52,8 @@ h1 {
 }
 
 /* Infobox */
-.infobox, #infobox {
+.infobox, 
+#infobox {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -71,7 +67,9 @@ h1 {
   pointer-events: none;
   z-index: 1000;
 }
-.infobox.visible, #infobox.visible {
+
+.infobox.visible, 
+#infobox.visible {
   opacity: 1;
 }
 
@@ -93,6 +91,7 @@ h1 {
   top: 50px;
   transform: translateX(-50%) translateY(-110%);
 }
+
 .top-strip.visible-by-it {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
@@ -103,6 +102,7 @@ h1 {
   bottom: 80px;
   transform: translateX(-50%) translateY(110%);
 }
+
 .bottom-strip.visible-by-this {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
@@ -115,7 +115,7 @@ h1 {
   display: inline-block;
   font-size: clamp(10px, 1.8vmin, 14px);
   color: #000;
-  border-left: 1px solid rgba(0,0,0,0.04);
+  border-left: 1px solid rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   cursor: pointer;
 }
@@ -135,6 +135,7 @@ h1 {
   object-fit: contain;
   border: 5px solid #000;
   border-radius: 0.5vmin;
+  transition: border-color 0.18s ease;
 }
 
 .top-box svg {
@@ -144,14 +145,13 @@ h1 {
 .top-box svg:hover,
 .bottom-box svg:hover {
   border-color: #2c70d1;
-  cursor: pointer;
 }
 
 .top-box div,
 .bottom-box div {
   margin-top: 0.25vmin;
   color: #000;
-  transition: color .18s ease;
+  transition: color 0.18s ease;
 }
 
 .top-box:hover div,
@@ -159,11 +159,11 @@ h1 {
   color: #2c70d1;
 }
 
-/* SVG fill behavior - consolidated */
+/* SVG fill behavior */
 .top-box svg *,
 .bottom-box svg * {
   fill: #000;
-  transition: fill .18s ease, stroke .18s ease;
+  transition: fill 0.18s ease, stroke 0.18s ease;
 }
 
 .top-box:hover svg *,
@@ -171,14 +171,18 @@ h1 {
   fill: #2c70d1;
 }
 
-/* Highlight state for top-box and bottom-box */
+/* Highlight & overlay-active states - consolidated */
 .top-box.highlight div,
-.bottom-box.highlight div {
+.top-box.overlay-active div,
+.bottom-box.highlight div,
+.bottom-box.overlay-active div {
   color: #2c70d1 !important;
 }
 
 .top-box.highlight svg,
-.bottom-box.highlight svg {
+.top-box.overlay-active svg,
+.bottom-box.highlight svg,
+.bottom-box.overlay-active svg {
   border-color: #2c70d1 !important;
 }
 
@@ -188,42 +192,18 @@ h1 {
 .top-box.highlight ellipse,
 .top-box.highlight polygon,
 .top-box.highlight polyline,
-.bottom-box.highlight path,
-.bottom-box.highlight rect,
-.bottom-box.highlight circle,
-.bottom-box.highlight ellipse,
-.bottom-box.highlight polygon,
-.bottom-box.highlight polyline {
-  fill: #2c70d1 !important;
-  stroke: #2c70d1 !important;
-}
-
-/* Highlight state for interactive word */
-.interactive-word.highlight .label {
-  color: #2c70d1 !important;
-  text-decoration: underline;
-  text-decoration-thickness: 0.05em;
-  text-decoration-color: #2c70d1;
-  text-underline-offset: 0.1em;
-}
-
-/* Overlay-active state - when overlay is open */
-.top-box.overlay-active div,
-.bottom-box.overlay-active div {
-  color: #2c70d1 !important;
-}
-
-.top-box.overlay-active svg,
-.bottom-box.overlay-active svg {
-  border-color: #2c70d1 !important;
-}
-
 .top-box.overlay-active path,
 .top-box.overlay-active rect,
 .top-box.overlay-active circle,
 .top-box.overlay-active ellipse,
 .top-box.overlay-active polygon,
 .top-box.overlay-active polyline,
+.bottom-box.highlight path,
+.bottom-box.highlight rect,
+.bottom-box.highlight circle,
+.bottom-box.highlight ellipse,
+.bottom-box.highlight polygon,
+.bottom-box.highlight polyline,
 .bottom-box.overlay-active path,
 .bottom-box.overlay-active rect,
 .bottom-box.overlay-active circle,
@@ -232,6 +212,23 @@ h1 {
 .bottom-box.overlay-active polyline {
   fill: #2c70d1 !important;
   stroke: #2c70d1 !important;
+}
+
+/* Highlight state for interactive word */
+.interactive-word.highlight .label {
+  color: #2c70d1 !important;
+  text-decoration: underline 0.05em #2c70d1;
+  text-underline-offset: 0.1em;
+}
+
+/* Box content styles */
+.box-references {
+  display: none;
+}
+
+.top-box > div:first-of-type,
+.bottom-box > div:first-of-type {
+  text-align: center;
 }
 
 /* Overlay */
@@ -256,12 +253,12 @@ h1 {
 
 .strip-overlay.top {
   top: 50px;
-  height: calc(10vmin + 4vmin);
+  height: calc(14vmin);
 }
 
 .strip-overlay.bottom {
   bottom: 50px;
-  height: calc(10vmin + 4vmin);
+  height: calc(14vmin);
 }
 
 .overlay-header {
@@ -270,7 +267,7 @@ h1 {
 
 .overlay-header h3 {
   font-weight: bold;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem;
   font-size: 1.2rem;
 }
 
@@ -335,18 +332,4 @@ h1 {
 
 .overlay-close:hover {
   color: #2c70d1;
-}
-
-.top-box.highlight svg {
-  border-color: #2c70d1 !important;
-}
-
-.top-box.highlight svg path {
-  fill: #2c70d1;
-  transition: fill 0.2s ease;
-}
-
-.interactive-word.highlight {
-  color: #2c70d1;
-  transition: color 0.2s ease;
 }
